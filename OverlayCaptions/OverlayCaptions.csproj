@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Include the custom font only once -->
+		<Resource Include="Fonts\texting2007.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="Vosk" Version="0.3.38" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<RootNamespace>OverlayCaptions</RootNamespace>
+		<!-- Update this -->
+	</PropertyGroup>
+
+</Project>
