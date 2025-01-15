@@ -10,7 +10,7 @@ namespace OverlayCaptions
 {
     public partial class MainWindow : Window
     {
-        private WasapiLoopbackCapture loopbackCapture; // Captures the system audio
+        private WasapiLoopbackCapture loopbackCapture; // Capture  audio
         private VoskRecognizer recognizer;
 
         public MainWindow()
@@ -21,29 +21,29 @@ namespace OverlayCaptions
 
         private void InitializeSpeechRecognition()
         {
-            // Resolve relative path to Vosk model
+            // for vosk model
             var modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models", "vosk-model-small-en-us-0.15");
             if (!Directory.Exists(modelPath))
             {
                 throw new DirectoryNotFoundException($"Model path not found: {modelPath}");
             }
 
-            // Initialize Vosk model
+            
             var model = new Model(modelPath);
 
-            // Initialize recognizer
+            
             recognizer = new VoskRecognizer(model, 16000.0f);
 
-            // Initialize system audio capture after recognizer initialization
+            
             loopbackCapture = new WasapiLoopbackCapture
             {
-                WaveFormat = new WaveFormat(16000, 1) // 16 kHz mono audio
+                WaveFormat = new WaveFormat(16000, 1) 
             };
 
-            // Event for data capture
+           
             loopbackCapture.DataAvailable += LoopbackCapture_DataAvailable;
 
-            // Start capturing system audio
+            
             loopbackCapture.StartRecording();
         }
 
@@ -52,21 +52,21 @@ namespace OverlayCaptions
             if (recognizer.AcceptWaveform(e.Buffer, e.BytesRecorded))
             {
                 var resultJson = recognizer.Result();
-                var resultText = ExtractTextFromJson(resultJson); // Extract transcription text
+                var resultText = ExtractTextFromJson(resultJson); // Extract 
                 Dispatcher.Invoke(() =>
                 {
-                    ClearAndSetCaptionText(resultText); // Immediately clear and update with final text
+                    ClearAndSetCaptionText(resultText); // Immediately clear 
                 });
             }
             else
             {
                 var partialJson = recognizer.PartialResult();
-                var partialText = ExtractTextFromJson(partialJson); // Extract partial text
+                var partialText = ExtractTextFromJson(partialJson); // Extract text
                 if (!string.IsNullOrWhiteSpace(partialText))
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        ClearAndSetCaptionText(partialText); // Immediately clear and update with partial text
+                        ClearAndSetCaptionText(partialText); // 
                     });
                 }
             }
@@ -76,7 +76,7 @@ namespace OverlayCaptions
         {
             try
             {
-                // Parse the JSON and extract the text
+                // Parse json
                 using var doc = JsonDocument.Parse(json);
                 if (doc.RootElement.TryGetProperty("text", out var textElement))
                 {
@@ -89,21 +89,21 @@ namespace OverlayCaptions
             }
             catch
             {
-                // Ignore errors and return the raw JSON if parsing fails
+                // Ignore 
             }
             return string.Empty;
         }
 
         private void ClearAndSetCaptionText(string newText)
         {
-            // Clear the current text and set the new transcription
-            CaptionText.Text = string.Empty; // Clear old text
-            CaptionText.Text = newText.Trim(); // Set the new text
+            // Clear 
+            CaptionText.Text = string.Empty; // Clear
+            CaptionText.Text = newText.Trim(); 
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Allow dragging the window
+            // for box dragging
             if (e.ButtonState == MouseButtonState.Pressed)
             {
                 DragMove();
@@ -112,7 +112,7 @@ namespace OverlayCaptions
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            // Cleanup resources when the window is closed
+            // Cleanup stuff
             loopbackCapture.StopRecording();
             loopbackCapture.Dispose();
             recognizer.Dispose();
