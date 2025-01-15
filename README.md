@@ -16,7 +16,7 @@
    cd OverlayCaptions
 '''
 
-[![Watch the video]([https://img.youtube.com/vi/HQLgd2tPahE/0.jpg)](https://www.youtube.com/watch?v=HQLgd2tPahE&ab_channel=xqyet](https://www.youtube.com/watch?v=72KirniPBrM&ab_channel=xqyet))
+[![Watch the video](https://img.youtube.com/vi/72KirniPBrM/0.jpg)](https://www.youtube.com/watch?v=72KirniPBrM&ab_channel=xqyet)
 
 ## Run Application
 - **The application will start capturing audio from your system immediately upon launch.**
