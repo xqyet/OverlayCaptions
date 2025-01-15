@@ -1,4 +1,4 @@
-# OverlayCaptions
+# RealTimeCaptionOverlay
 
 **OverlayCaptions** is a real-time captioning application that captures audio from your system and displays live transcriptions as text overlays. This project utilizes the [Vosk API](https://alphacephei.com/vosk/) for speech recognition and [NAudio](https://github.com/naudio/NAudio) for capturing audio input.
 
