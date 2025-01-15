@@ -1,6 +1,6 @@
 # RealTimeCaptionOverlay
 
-A is a real-time captioning application that just captures audio from your system and then displays the live transcription as text overlays. This project utilizes [Vosk's training model](https://alphacephei.com/vosk/) for speech recognition and [NAudio](https://github.com/naudio/NAudio) for capturing audio input.
+A is a real-time captioning application that just captures audio from your system and then displays the live transcription as text overlays. This project utilizes [Vosk's training model](https://alphacephei.com/vosk/) for speech recognition and [NAudio](https://github.com/naudio/NAudio) for capturing audio input. All required nuget packages are pre-installed so no external dependencies needed! clone-and-play
 
 ## Requirements
 
@@ -14,7 +14,8 @@ A is a real-time captioning application that just captures audio from your syste
    ```bash
    git clone https://github.com/<your-username>/OverlayCaptions.git
    cd OverlayCaptions
-'''
+   dotnet run
+
 ## Demo
 
 [![Watch the video](https://img.youtube.com/vi/72KirniPBrM/0.jpg)](https://www.youtube.com/watch?v=72KirniPBrM&ab_channel=xqyet)
