@@ -15,6 +15,9 @@
    git clone https://github.com/<your-username>/OverlayCaptions.git
    cd OverlayCaptions
 '''
+
+[![Watch the video]([https://img.youtube.com/vi/HQLgd2tPahE/0.jpg)](https://www.youtube.com/watch?v=HQLgd2tPahE&ab_channel=xqyet](https://www.youtube.com/watch?v=72KirniPBrM&ab_channel=xqyet))
+
 ## Run Application
 - **The application will start capturing audio from your system immediately upon launch.**
 - **The transcriptions will appear on your screen, updated in real time.**
