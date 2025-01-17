@@ -6,11 +6,11 @@ using System.Windows.Input;
 using NAudio.Wave;
 using Vosk;
 
-namespace OverlayCaptions
+namespace RealTimeCaptionOverlay
 {
     public partial class MainWindow : Window
     {
-        private WasapiLoopbackCapture loopbackCapture; // Capture  audio
+        private WasapiLoopbackCapture loopbackCapture; // Captures the system audio
         private VoskRecognizer recognizer;
 
         public MainWindow()
@@ -21,52 +21,54 @@ namespace OverlayCaptions
 
         private void InitializeSpeechRecognition()
         {
-            // for vosk model
+            // Resolve relative path to Vosk model
             var modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models", "vosk-model-small-en-us-0.15");
             if (!Directory.Exists(modelPath))
             {
                 throw new DirectoryNotFoundException($"Model path not found: {modelPath}");
             }
 
-            
+            // Initialize Vosk model
             var model = new Model(modelPath);
 
-            
+            // Initialize recognizer
             recognizer = new VoskRecognizer(model, 16000.0f);
 
-            
+            // Initialize system audio capture after recognizer initialization
             loopbackCapture = new WasapiLoopbackCapture
             {
-                WaveFormat = new WaveFormat(16000, 1) 
+                WaveFormat = new WaveFormat(16000, 1) // 16 kHz mono audio
             };
 
-           
+            // Event for data capture
             loopbackCapture.DataAvailable += LoopbackCapture_DataAvailable;
 
-            
+            // Start capturing system audio
             loopbackCapture.StartRecording();
         }
+
+
 
         private void LoopbackCapture_DataAvailable(object sender, WaveInEventArgs e)
         {
             if (recognizer.AcceptWaveform(e.Buffer, e.BytesRecorded))
             {
                 var resultJson = recognizer.Result();
-                var resultText = ExtractTextFromJson(resultJson); // Extract 
+                var resultText = ExtractTextFromJson(resultJson); // Extract transcription text
                 Dispatcher.Invoke(() =>
                 {
-                    ClearAndSetCaptionText(resultText); // Immediately clear 
+                    ClearAndSetCaptionText(resultText); // Immediately clear and update with final text
                 });
             }
             else
             {
                 var partialJson = recognizer.PartialResult();
-                var partialText = ExtractTextFromJson(partialJson); // Extract text
+                var partialText = ExtractTextFromJson(partialJson); // Extract partial text
                 if (!string.IsNullOrWhiteSpace(partialText))
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        ClearAndSetCaptionText(partialText); // 
+                        ClearAndSetCaptionText(partialText); // Immediately clear and update with partial text
                     });
                 }
             }
@@ -76,7 +78,7 @@ namespace OverlayCaptions
         {
             try
             {
-                // Parse json
+                // Parse the JSON and extract the text
                 using var doc = JsonDocument.Parse(json);
                 if (doc.RootElement.TryGetProperty("text", out var textElement))
                 {
@@ -89,21 +91,21 @@ namespace OverlayCaptions
             }
             catch
             {
-                // Ignore 
+                // Ignore errors and return the raw JSON if parsing fails
             }
             return string.Empty;
         }
 
         private void ClearAndSetCaptionText(string newText)
         {
-            // Clear 
-            CaptionText.Text = string.Empty; // Clear
-            CaptionText.Text = newText.Trim(); 
+            // Clear the current text and set the new transcription
+            CaptionText.Text = string.Empty; // Clear old text
+            CaptionText.Text = newText.Trim(); // Set the new text
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // for box dragging
+            // Allow dragging the window
             if (e.ButtonState == MouseButtonState.Pressed)
             {
                 DragMove();
@@ -112,7 +114,7 @@ namespace OverlayCaptions
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            // Cleanup stuff
+            // Cleanup resources when the window is closed
             loopbackCapture.StopRecording();
             loopbackCapture.Dispose();
             recognizer.Dispose();
